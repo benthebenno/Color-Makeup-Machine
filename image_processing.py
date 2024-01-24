@@ -10,100 +10,130 @@ def image_processor(image_string):
     image_pixel_info = []
     im = Image.open(image_string)
     px = im.load()
-    
-    for height in range(im.size[0]-1):
-        for width in range(im.size[1]-1):
-            pixel_touple = px[height,width]
+    total_height = im.size[1] 
+    # print("y" + str(total_height))
+    # print("x" + str(im.size[0]))
+
+    # print(im.size[0])
+    # print(im.size[1])
+    # f = open('all_things_read.txt', 'w')
+    for height in range(im.size[1]):
+        for width in range(im.size[0]):   
+            #have to minus it from total as this program starts reading from top left corner
+            # print("x,y:" +str(width) + "," + str(height))
+            #print(width)
+            #print(height)
+            pixel_touple = px[width, height]
+            # f.write('x: '+str(width) +'y: '+str(height) +'= '+str(px[width,height]) + '\n')
+            if width==17 and height==203:
+                print("it happens," + str(pixel_touple))
+         
+            # print("x,y:" +str(width) + "," + str(height) + 'color' + str(pixel_touple))
+            # pixel_touple = px[width,total_height - height]
             #image_position_tracker[(height,width)] = (int(pixel_touple[0]), int(pixel_touple[1]), int(pixel_touple[2]))
-            #print("x,y:" +str(height) + "," + str(width) + 'color' + str(pixel_touple))
             # print(pixel_touple)
             image_pixel_info.append((int(pixel_touple[0]), int(pixel_touple[1]), int(pixel_touple[2])))
     total_list_for_one_image.append(image_pixel_info)
     
     #print(total_list_for_one_image)
-    return (total_list_for_one_image, width, height, )
+    print(im.size[0])
+    print(im.size[1])
+    return (total_list_for_one_image, im.size[0], im.size[1])
 
 def color_processor(list_of_lists, width, height):
     color_list = []
-    mut_height= 0
-    mut_width= 0
-    image_position_tracker2 = {}
+    mut_height= height
+    mut_width= width
+    image_position_tracker = {}
+    # f = open('entire_things made.txt', 'w')
+    count = 0
     for total_list in list_of_lists:
+        picture_iter = 0
+        pixel_num = 0
+        #for color_tuple in total_list:
+        print(width)
+        print(height)
        
-        for color_tuple in total_list:
-            
-    
-            
-            #print(str(mut_height), str(mut_width))
-    
-            largest_color = 4
-            smallest_color = 4
+        for mut_height in range(height):    
+            for mut_width in range(width):
+                # print(count)
+                # count = count +1 
+               
 
-            #print(color_tuple)
-            if color_tuple[0] > color_tuple[1] and color_tuple[0] >color_tuple[2]:
-                largest_color = 0
-            elif color_tuple[1] > color_tuple[0] and color_tuple[1] > color_tuple[2]:
-                largest_color =1
-            else:
-                largest_color =2
-            
-            if color_tuple[0] < color_tuple[1] and color_tuple[0] <color_tuple[2]:
-                smallest_color = 0
-            elif color_tuple[1] < color_tuple[0] and color_tuple[1] < color_tuple[2]:
-                smallest_color =1
-            else:
-                smallest_color =2
-            
-            
-            percent_diffrence = ((color_tuple[largest_color] - color_tuple[smallest_color]) / (color_tuple[smallest_color]+1)) * 100
-            #print(percent_diffrence)
+                color_tuple = total_list[pixel_num]
+                # print(color_tuple)
+                pixel_num = pixel_num + 1
+                #print(str(mut_height), str(mut_width))
+        
+                largest_color = 4
+                smallest_color = 4
 
-            if color_tuple[0] >150 and color_tuple[1] >150 and color_tuple[2] <120:
-                color_list.append("yellow")
-                image_position_tracker2[mut_height, mut_width]  = "yellow"
-            elif color_tuple[0] >150 and color_tuple[1] <120 and color_tuple[2] >150:
-                color_list.append("magenta")
-                image_position_tracker2[mut_height, mut_width]  = "magenta"
-
-            elif color_tuple[0] <120 and color_tuple[1] >150 and color_tuple[2] >150:
-                color_list.append("cyan")
-                image_position_tracker2[mut_height, mut_width]  = "cyan"
-
-            elif percent_diffrence < 20:
-                if color_tuple[0]>150 and color_tuple[0]<230:
-                    color_list.append("grey")
-                    image_position_tracker2[mut_height, mut_width]  = "grey"
-
-                elif color_tuple[0]>=230:
-                    color_list.append("white")
-                    image_position_tracker2[mut_height, mut_width]  = "white"
-
-                elif color_tuple[0] < 150:
-                    color_list.append("black")
-                    image_position_tracker2[mut_height, mut_width]  = "black"
-
-            elif largest_color == 0:
-                color_list.append("red")
-                image_position_tracker2[mut_height, mut_width]  = "red"
+                #print(color_tuple)
+                if color_tuple[0] > color_tuple[1] and color_tuple[0] >color_tuple[2]:
+                    largest_color = 0
+                elif color_tuple[1] > color_tuple[0] and color_tuple[1] > color_tuple[2]:
+                    largest_color =1
+                else:
+                    largest_color =2
                 
-            elif largest_color == 1:
-                color_list.append("green")
-                image_position_tracker2[mut_height, mut_width] = "yellow"
+                if color_tuple[0] < color_tuple[1] and color_tuple[0] <color_tuple[2]:
+                    smallest_color = 0
+                elif color_tuple[1] < color_tuple[0] and color_tuple[1] < color_tuple[2]:
+                    smallest_color =1
+                else:
+                    smallest_color =2
+                
+                
+                percent_diffrence = ((color_tuple[largest_color] - color_tuple[smallest_color]) / (color_tuple[smallest_color]+1)) * 100
+                #print(percent_diffrence)
 
-            elif largest_color == 2:
-                color_list.append("blue")
-                image_position_tracker2[mut_height, mut_width] = "blue"
+                if color_tuple[0] >150 and color_tuple[1] >150 and color_tuple[2] <120:
+                    color_list.append("yellow")
+                    image_position_tracker[mut_width, mut_height]  = "yellow"
+                elif color_tuple[0] >150 and color_tuple[1] <120 and color_tuple[2] >150:
+                    color_list.append("magenta")
+                    image_position_tracker[mut_width, mut_height]  = "magenta"
+                elif color_tuple[0] <120 and color_tuple[1] >150 and color_tuple[2] >150:
+                    color_list.append("cyan")
+                    image_position_tracker[mut_width, mut_height]  = "cyan"
+                elif percent_diffrence < 20:
+                    if color_tuple[0]>150 and color_tuple[0]<230:
+                        color_list.append("grey")
+                        image_position_tracker[mut_width, mut_height]  = "grey"
+
+                    elif color_tuple[0]>=230:
+                        color_list.append("white")
+                        image_position_tracker[mut_width, mut_height]  = "white"
+
+                    elif color_tuple[0] < 150:
+                        color_list.append("black")
+                        image_position_tracker[mut_width, mut_height]  = "black"
+                elif largest_color == 0:
+                    color_list.append("red")
+                    image_position_tracker[mut_width, mut_height]  = "red"
+                elif largest_color == 1:
+                    color_list.append("green")
+                    image_position_tracker[mut_width, mut_height] = "yellow"
+                elif largest_color == 2:
+                    color_list.append("blue")
+                    image_position_tracker[mut_width, mut_height] = "blue"
+                else:
+                    color_list.append("pink")
+                    image_position_tracker[mut_width, mut_height] = "pink"
             
-            
-            if mut_width != width+1:
-                mut_width = mut_width +1
-            else: 
-                mut_width = 0
-                mut_height = mut_height +1    
-                    
-    #print(image_position_tracker2)
-    print(image_position_tracker2)
-    return color_list, image_position_tracker2
+                # f.write('x: '+str(mut_width) +'y: '+str(mut_height) +'= '+str(image_position_tracker[mut_width, mut_height]) + '\n')
+            # if mut_width != width:
+            #     mut_width = mut_width +1
+            # else: 
+            #     print( mut_width, mut_height)
+            #     mut_width = 0
+            #     mut_height = mut_height +1    
+        picture_iter = picture_iter +1
+
+    #print(image_position_tracker)
+    #print(image_position_tracker)
+    # f.close()
+    return color_list, image_position_tracker
             #print(color_list.pop)
     #print(color_list)
        
@@ -164,16 +194,28 @@ def make_graph(color_dict, is_percent, is_pie):
 
 
 def draw_the_info(image_position_tracker, width, height):
-    im = Image.new('RGBA', ( height, width), (25, 25, 25, 0))
+    im = Image.new('RGBA', (width, height), (25, 25, 25, 0))
     draw = ImageDraw.Draw(im) 
-    pixel_num=0
+    # pixel_num=0
     #print(color_list)
-    for i in range(height-1):
-        for l in range(width-1):
-            #print("x,y:" +str(height-i) + "," + str(width-l))
-            draw.point((height- i, width - l), image_position_tracker[height - i, width - l])
-            pixel_num = pixel_num+1
+    # print(width)
+    # print(height)
+    # f = open('entire_data_Base.txt', 'w')
+    for l in range(height):
+        for i in range(width):
+            # print("x,y:" +str(i) + "," + str(l), image_position_tracker[i,l])
+            # print(image_position_tracker[i,l])
+            # if image_position_tracker[i,l] != None:
+        
+            # f.write('x: '+str(i) +'y: '+str(l) +'= '+str(image_position_tracker[i,l]) + '\n')
+            draw.point((i, l), image_position_tracker[i, l])
+        
+            # else:
+
+            # draw.point((i,l), "pink" )
+            # pixel_num = pixel_num+1
     im.show()
+    # f.close()
     #im.save("ImageDraw.png")
     
     
