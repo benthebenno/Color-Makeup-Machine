@@ -1,8 +1,8 @@
 from progam_ui import create_game
 from image_processing import image_processor
 from image_processing import make_graph
-from image_processing import color_processor
-from image_processing import draw_the_info
+# from image_processing import color_processor
+# from image_processing import draw_the_info
 
 color_dict = {
         'red':0,
@@ -20,16 +20,16 @@ image_string = create_game()
 
 
 if image_string != None:
-    x= 0
+    # x= 0
     for image in image_string[0]:
-        x=x+1
+        # x=x+1
         #print("image "+str(x)+" done processing")
         color_list_input = image_processor(image)
-        color_list = color_processor(color_list_input[0],  color_list_input[1], color_list_input[2])
+        # color_list = color_processor(color_list_input[0],  color_list_input[1], color_list_input[2])
         #if make_image == True:
-        draw_the_info(color_list[1], color_list_input[1], color_list_input[2])
+        #draw_the_info(color_list_input[1], color_list_input[2], color_list_input[3])
 
-        for color in color_list[0]:
+        for color in color_list_input[0]:
             if color == "red":
                 color_dict['red'] = color_dict['red'] + 1
             if color == "green":
