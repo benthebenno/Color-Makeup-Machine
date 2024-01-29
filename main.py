@@ -7,9 +7,11 @@ from PIL import ImageDraw
 import pygame
 from PIL import ImageFont
 
-# from image_processing import color_processor
-# from image_processing import draw_the_info
+#This is the main file for the program, using other functions it makes a dictionary of the color of every pixel, then creates a graph of that information 
 
+
+#This dictionary tracks the colors of pixels through many images, once processed the keys hold the total number of times each colored pixel appears
+#Using this dictionary instead of a list saves a lot of memory and causes the program to preform much better
 color_dict = {
         'red':0,
         'green':0,
@@ -22,15 +24,23 @@ color_dict = {
         'cyan':0,
     }
 
+#This calls the create game function (located within the program_ui.py file), which makes the first visual part of the progam, allowing the user  to choose program specifications
+#The function returns a tuple containing (str(the file destination), bool(if the function should be a percent), bool(if the function should create a pie chart), bool(if the function should be one image) )
 image_string = create_game()
+
+#This if statement means if no image is given, instead of crashing the program just closes
 if image_string != None:
 
+    #This if statement, checks if one image or multiple are being inputted, if the bool is true the program runs expecting one thing, if false the else hands mutliple
     if image_string[3]:
 
-        color_list_input = image_processor(image_string[0][0])
+        #This function (located within image_processing.py) goes through the image and gets a string discribing the color for each pixel, 
+        #then reuturn a list of all those pixels.
+        #As well this function displays a visual copy of the inputed image, but with each pixel being replaced by the more vague color this program works with.
+        color_list = image_processor(image_string[0][0])
     
-
-        for color in color_list_input[0]:
+        #This for loop goes over each color in the list, and then adds to the respective dictionary key. 
+        for color in color_list[0]:
             if color == "red":
                 color_dict['red'] = color_dict['red'] + 1
             if color == "green":
@@ -50,23 +60,22 @@ if image_string != None:
             if color == "cyan":
                 color_dict['cyan'] = color_dict['cyan'] + 1
 
-
+        #This function (located within program_ui.py), takes in the dictionary and graph information
+        #then creates and displays that graph.
         make_graph(color_dict, image_string[1], image_string[2])
 
     else:
-        
-        # mf = ImageFont.truetype('font.ttf', 25)
-        # Add Text to an image
-        count = 0
+        #This varible lets the program know if a new window has been made, as it becomes True when a window is made       
         has_happened = False
 
-        # Display edited image on which we have added the text
-
+        #This for loop iterates over mutlipe image file paths, and adds to the color dictionary for each of them.
         for image in image_string[0]:
             
+            #This function (located within image_processing.py) goes through the image and gets a string discribing the color for each pixel, 
+            #then reuturn a list of all those pixels.
             color_list_input = image_processor_multiple(image)
-            count = count + 1
 
+            #This for loop goes over each color in the list, and then adds to the respective dictionary key. 
             for color in color_list_input:
                 if color == "red":
                     color_dict['red'] = color_dict['red'] + 1
@@ -86,23 +95,24 @@ if image_string != None:
                     color_dict['magenta'] = color_dict['magenta'] + 1
                 if color == "cyan":
                     color_dict['cyan'] = color_dict['cyan'] + 1
+            
+            #This if statement makes it so whenever a new iteration occurs the winodw displaying that an iteration has accured closes.
             if has_happened:
                 pygame.quit()
             
+            #The five lines below this open a window displaying the words "One Image Has Loaded!", this window is disigned to pop up everytime a single image has loaded,
+            #letting the user know the program is working.
             pygame.init()
             scrn = pygame.display.set_mode((800, 600))
-            imp = pygame.image.load("C:\\Users\\Ben\Color-Makeup-Machine\images\Loaded_Image.png").convert()
+            imp = pygame.image.load("C:\\Users\\Ben\\Color-Makeup-Machine\\images\\Loaded_Image.png").convert()
+
             scrn.blit(imp, (0, 0))
             pygame.display.update()
 
-            #i = Image.open('C:\\Users\\Ben\Color-Makeup-Machine\images\Background.png')
-            #Im = ImageDraw.Draw(imp)
-            # imp.text((0,0), "Images processed: "+ str(count), (25,190, 60))
-            # imp.show()
+            #Lets the program know that a window has been opened
             has_happened = True
         pygame.quit()
-                    # Im.text((15,15), "Lady watching movie with her dog", (255,0,0), font=mf)
-            #scrn.fill('black')
-            # scrn.
-        
+
+        #This function (located within program_ui.py), takes in the dictionary and graph information
+        #then creates and displays that graph.
         make_graph(color_dict, image_string[1], image_string[2])
