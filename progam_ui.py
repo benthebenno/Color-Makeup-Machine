@@ -11,144 +11,86 @@ def create_game():
     HEIGHT = 600
 
     PROGRAMSTART = False
-    final_descion_made = False
+    Enter_count = 0
     math_decision_made = False
+
+    scrn = pygame.display.set_mode((WIDTH, HEIGHT))
+    first_reached = False
+    second_reached = False
+    third_reached = False
+    fourth_reached = False
+    fifth_reached = False
+
+    #these variables are changed to alter the final graph
+
     is_pie = True
     is_percent = True
+    is_one_image = True
 
+        # set the pygame window name
+    pygame.display.set_caption('Color Makeup Machine')
+    imp = pygame.image.load("C:\\Users\\Ben\Color-Makeup-Machine\images\Front_Page.png").convert()
+    scrn.blit(imp, (0, 0))
 
-    def prompt_file():
-        """Create a Tk file dialog and cleanup when finished"""
-        top = tkinter.Tk()
-        top.withdraw()  # hide window
-        file_name = tkinter.filedialog.askopenfilenames(parent=top)
-        top.destroy()
-        return file_name
-
-
-
-
-    #creates screen
-    screen = pygame.display.set_mode([WIDTH, HEIGHT])
-
-    # Run until the user asks to quit
+    pygame.display.flip()
     running = True
     while running:
-
+       
+        # create the display surface object
+        # of specific dimension..e(X, Y).
         # Did the user click the window close button?
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYUP:
-                
-
                 if event.key == pygame.K_ESCAPE:
                     running = False
 
                 if event.key == 13:
-                    PROGRAMSTART = True
+                    Enter_count = Enter_count +1
+                if event.key == pygame.K_g:
+                    is_pie = True
+                if event.key == pygame.K_n:
+                    is_percent = False
+                if event.key == pygame.K_p:
+                    is_percent = True
+                if event.key == pygame.K_b:
+                    is_pie = False
+                if event.key == pygame.K_1:
+                    is_one_image = True
+                if event.key == pygame.K_x:
+                    is_one_image = False
+                if event.key == pygame.K_SPACE:
+                    f = prompt_file()
+                    pygame.quit()
+                    return (f,is_percent, is_pie, is_one_image)
+        
     
-            
-        
-        # Fill the background with white
-        screen.fill((32, 42, 68))
+        if Enter_count == 1 and (not first_reached):
+            imp = pygame.image.load("C:\\Users\\Ben\Color-Makeup-Machine\images\Page2_One_orX.png").convert()
+            scrn.blit(imp, (0, 0))
+            pygame.display.update()
+            first_reached = True
 
-        
-        if not PROGRAMSTART:
-            # Creates the instructions
-            text_font = pygame.font.SysFont("any_font", 60)
-            text_block = text_font.render(
-                "Welcome to the color makeup machine!", False, (200, 100, 0)
-            )
-            screen.blit(text_block, (10, 50))
 
-            text_font = pygame.font.SysFont("any_font", 20)
-            text_block = text_font.render(
-                "This program will process all the image files given too it", False, (200, 100, 0)
-            )
+        if Enter_count == 2 and (not second_reached):
+            imp = pygame.image.load("C:\\Users\\Ben\Color-Makeup-Machine\images\Page3_Percentage_or_Pixel.png").convert()
+            scrn.blit(imp, (0, 0))
+            pygame.display.update()
+            second_reached = True  
 
-            screen.blit(text_block, (40, 400))
+        if Enter_count == 3 and (not third_reached):
+            imp = pygame.image.load("C:\\Users\\Ben\Color-Makeup-Machine\images\Page4_Pie_or_bar.png").convert()
+            scrn.blit(imp, (0, 0))
+            pygame.display.update()
+            third_reached = True 
+        if Enter_count == 4 and (not fourth_reached):
+            imp = pygame.image.load("C:\\Users\\Ben\Color-Makeup-Machine\images\Page5_Final.png").convert()
+            scrn.blit(imp, (0, 0))
+            pygame.display.update()
+            fourth_reached = True  
+    
 
-            text_font = pygame.font.SysFont("any_font", 20)
-            text_block = text_font.render(
-                "and will then return a graph of the color compisition of those images.", False, (200, 100, 0)
-            )
-            screen.blit(text_block, (10, 420))
-        if PROGRAMSTART:
-            screen.fill((32, 42, 68))
-
-            text_font = pygame.font.SysFont("any_font", 20)
-            text_block = text_font.render(
-                "Click p to have the graph come out as a percetange", False, (200, 100, 0)
-            )
-
-            screen.blit(text_block, (40, 400))
-
-            text_font = pygame.font.SysFont("any_font", 20)
-            text_block = text_font.render(
-                "or click n to have the graph list total number of pixels.", False, (200, 100, 0)
-            )
-            screen.blit(text_block, (10, 420))
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_p:
-                        math_decision_made = True
-                    if event.key == pygame.K_n:
-                        is_percent = False
-                        math_decision_made = True
-
-        if math_decision_made:
-            
-            screen.fill((32, 42, 68))
-
-            text_font = pygame.font.SysFont("any_font", 20)
-            text_block = text_font.render(
-                "Click p to have the graph come out as a pie chart", False, (200, 100, 0)
-            )
-
-            screen.blit(text_block, (40, 400))
-
-            text_font = pygame.font.SysFont("any_font", 20)
-            text_block = text_font.render(
-                "or click b to have the graph come out as a bar graph.", False, (200, 100, 0)
-            )
-            screen.blit(text_block, (10, 420))
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_p:
-                        final_descion_made = True
-                    if event.key == pygame.K_b:
-                        is_pie = False
-                        final_descion_made = True
-
-        if final_descion_made:
-            
-            screen.fill((32, 42, 68))
-
-            text_font = pygame.font.SysFont("any_font", 20)
-            text_block = text_font.render(
-                "Now just click space, and select your images.", False, (200, 100, 0)
-            )
-            screen.blit(text_block, (40, 400))
-
-            text_font = pygame.font.SysFont("any_font", 20)
-            text_block = text_font.render(
-                "or click b to have the graph come out as a bar graph.", False, (200, 100, 0)
-            )
-            screen.blit(text_block, (10, 420))
-
-            for event in pygame.event.get():
-                if event.type == pygame.KEYUP:
-                    if event.key == pygame.K_SPACE:
-                        f = prompt_file()
-                        return (f,is_percent, is_pie)
-        
-
-        #Creates the 
-
-        # Flip the display
         pygame.display.update()
 
     # Done! Time to quit.
@@ -156,3 +98,10 @@ def create_game():
     pygame.quit()
 
 
+def prompt_file():
+        """Create a Tk file dialog and cleanup when finished"""
+        top = tkinter.Tk()
+        top.withdraw()  # hide window
+        file_name = tkinter.filedialog.askopenfilenames(parent=top)
+        top.destroy()
+        return file_name
